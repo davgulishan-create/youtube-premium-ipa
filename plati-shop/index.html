@@ -1,0 +1,237 @@
+<title>Магазин кодов на Plati</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a seller's workbench — one narrow column, tabbed into calculator, listing, support, todo */
+:root{
+  --bg:#f3f4f7; --surface:#ffffff; --ink:#151a2b; --muted:#5d6479; --line:#dfe2ea;
+  --accent:#e0711b; --accent-ink:#ffffff; --good:#1f8a4c; --bad:#c23b2e; --chip:#fbeee2;
+  --f-display:"Unbounded",system-ui,sans-serif; --f-body:"Golos Text",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10131d; --surface:#181c2a; --ink:#e9ebf2; --muted:#9aa1b6; --line:#2a3044;
+  --accent:#f0913f; --accent-ink:#1a1206; --good:#4cc47f; --bad:#ef6b5e; --chip:#2c2218; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10131d; --surface:#181c2a; --ink:#e9ebf2; --muted:#9aa1b6; --line:#2a3044;
+  --accent:#f0913f; --accent-ink:#1a1206; --good:#4cc47f; --bad:#ef6b5e; --chip:#2c2218; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:760px;margin:0 auto;display:grid;gap:20px}
+h1{font:700 clamp(22px,5vw,30px)/1.15 var(--f-display);margin:0;text-wrap:balance}
+h2{font:600 18px/1.3 var(--f-display);margin:0;text-wrap:balance}
+h3{font:600 15px/1.3 var(--f-body);margin:0}
+p{margin:0}
+.lead{color:var(--muted);max-width:62ch}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:8px;z-index:5}
+.tabs button{font:500 14px var(--f-body);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{display:grid;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+label{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+input,select{font:500 15px var(--f-mono);padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.note{font-size:13px;color:var(--muted)}
+.chip{display:inline-block;font-size:12px;letter-spacing:.03em;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--accent);font-weight:600}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:14px}
+th,td{text-align:right;padding:8px 6px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font:600 12px var(--f-body);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+td:first-child,th:first-child{text-align:left}
+td.price{font:600 15px var(--f-mono);color:var(--accent)}
+td.pos{color:var(--good)} td.neg{color:var(--bad)}
+.copybox{position:relative}
+pre.txt{white-space:pre-wrap;font:14px/1.55 var(--f-body);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;margin:0;max-height:none}
+.copy{justify-self:start;font:500 13px var(--f-body);padding:6px 12px;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+ol.todo{margin:0;padding-left:22px;display:grid;gap:10px}
+ol.todo li::marker{font:600 14px var(--f-mono);color:var(--accent)}
+.who{font-size:12px;font-weight:600;color:var(--muted)}
+.warn{border-left:3px solid var(--accent);padding-left:12px}
+@media (prefers-reduced-motion:no-preference){.tabs button{transition:background .15s}}
+</style>
+
+<div class="wrap">
+  <header style="display:grid;gap:8px">
+    <span class="chip">App Store & iTunes · автовыдача кодов</span>
+    <h1>Магазин кодов на Plati</h1>
+    <p class="lead">Здесь всё, что нужно для первой карточки: калькулятор цен, готовые тексты, ответы покупателям и список шагов в кабинете продавца. Цифры по умолчанию взяты для примера. Замените их своими.</p>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="t-calc" aria-selected="true" data-p="calc">Калькулятор</button>
+    <button role="tab" id="t-card" aria-selected="false" data-p="card">Карточка товара</button>
+    <button role="tab" id="t-support" aria-selected="false" data-p="support">Ответы в чат</button>
+    <button role="tab" id="t-todo" aria-selected="false" data-p="todo">Что сделать</button>
+  </nav>
+
+  <!-- CALCULATOR -->
+  <section class="panel" id="calc">
+    <div class="card">
+      <h2>Настройки</h2>
+      <div class="grid">
+        <label>Курс USD → ₽ на вашей карте<input id="rateUSD" type="number" step="0.01" value="95"></label>
+        <label>Курс TRY → ₽ на вашей карте<input id="rateTRY" type="number" step="0.01" value="2.8"></label>
+        <label>Комиссия банка за конвертацию, %<input id="fx" type="number" step="0.1" value="2"></label>
+        <label>Комиссия площадки, %<input id="fee" type="number" step="0.1" value="10"></label>
+        <label>Налог, % от выручки<input id="tax" type="number" step="0.1" value="6"></label>
+        <label>Ваша прибыль, % от себестоимости<input id="margin" type="number" step="0.5" value="10"></label>
+        <label>Скидка на закупку, %<input id="disc" type="number" step="0.5" value="0"></label>
+        <label>Округлять цену до, ₽<select id="round"><option>1</option><option selected>10</option><option>50</option></select></label>
+      </div>
+      <p class="note">Комиссия 10% указана для примера. Точную ставку посмотрите в кабинете Digiseller. Налог 6% соответствует ИП на УСН «доходы».</p>
+    </div>
+
+    <div class="card">
+      <div class="row"><h2>Цены по вариантам</h2><span class="chip" id="summary"></span></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Регион · номинал</th><th>Закупка, ₽</th><th>Цена на Plati</th><th>Вам на руки</th><th>Прибыль</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table></div>
+      <p class="note">«Вам на руки» — это цена минус комиссия площадки и налог. Прибыль — то, что останется после закупки кода. Перед тем как ставить цены, сравните их с конкурентами на этот же номинал.</p>
+    </div>
+  </section>
+
+  <!-- CARD -->
+  <section class="panel" id="card" hidden>
+    <div class="card">
+      <h3>Название товара</h3>
+      <pre class="txt" id="c-title">Подарочная карта App Store & iTunes | США | $5–$100 | Код сразу после оплаты</pre>
+      <button class="copy" data-c="c-title">Скопировать</button>
+    </div>
+    <div class="card">
+      <h3>Описание (RU)</h3>
+      <pre class="txt" id="c-ru">Вы получаете подарочный код App Store & iTunes. Код выдаётся автоматически сразу после оплаты: он появится на странице заказа и придёт на вашу почту.
+
+Код пополняет баланс Apple ID. С баланса можно оплачивать приложения, игры, подписки (iCloud+, Apple Music, Apple TV+ и другие) и покупки внутри приложений.
+
+ВАЖНО ПЕРЕД ПОКУПКОЙ
+• Регион кода должен совпадать с регионом вашего Apple ID. Код США работает только на аккаунте США.
+• Проверить регион: Настройки → [ваше имя] → Медиаматериалы и покупки → Просмотреть → Страна/регион.
+• Код одноразовый. После активации вернуть его нельзя.
+
+КАК АКТИВИРОВАТЬ
+1. Откройте App Store и нажмите на фото профиля вверху справа.
+2. Выберите «Погасить подарочную карту или код».
+3. Нажмите «Ввести код вручную» и введите код без пробелов.
+4. Деньги сразу зачислятся на баланс Apple ID.
+
+Если код не активируется, сначала запишите на видео, как вы вводите код, и напишите нам в чат заказа. Мы ответим и поможем. Претензии без видео рассмотреть не сможем.</pre>
+      <button class="copy" data-c="c-ru">Скопировать</button>
+    </div>
+    <div class="card">
+      <h3>Описание (EN)</h3>
+      <pre class="txt" id="c-en">You will receive an App Store & iTunes gift code. Delivery is instant: the code appears on the order page right after payment and is sent to your email.
+
+The code adds funds to your Apple ID balance. Use it for apps, games, subscriptions (iCloud+, Apple Music, Apple TV+ and more) and in-app purchases.
+
+BEFORE YOU BUY
+• The code region must match your Apple ID region. A US code works only on a US account.
+• Check your region: Settings → [your name] → Media & Purchases → View Account → Country/Region.
+• The code is single-use and cannot be returned after redemption.
+
+HOW TO REDEEM
+1. Open the App Store and tap your profile photo in the top right.
+2. Tap "Redeem Gift Card or Code".
+3. Tap "Enter Code Manually" and type the code without spaces.
+4. The funds are added to your Apple ID balance immediately.
+
+If the code does not work, record a video of entering it and message us in the order chat. We will help. Claims without a video cannot be reviewed.</pre>
+      <button class="copy" data-c="c-en">Скопировать</button>
+    </div>
+  </section>
+
+  <!-- SUPPORT -->
+  <section class="panel" id="support" hidden>
+    <div class="card">
+      <h3>«Код не активируется»</h3>
+      <pre class="txt" id="s1">Здравствуйте! Давайте разберёмся. Проверьте, пожалуйста:
+1. Регион вашего Apple ID совпадает с регионом кода (код США работает только на аккаунте США).
+2. Код введён вручную, без пробелов, буквы латиницей.
+3. Какой текст ошибки показывает App Store?
+
+Если всё верно, пришлите видео, на котором вы вводите код, и скриншот ошибки. Мы проверим код и, если проблема на нашей стороне, заменим его.</pre>
+      <button class="copy" data-c="s1">Скопировать</button>
+    </div>
+    <div class="card">
+      <h3>«У меня аккаунт другого региона»</h3>
+      <pre class="txt" id="s2">Здравствуйте! К сожалению, код работает только на аккаунте того региона, который указан в товаре. Если код ещё не активирован, напишите, какой у вас регион. Если у нас есть коды для вашего региона, предложим замену. Если нет, оформим возврат.</pre>
+      <button class="copy" data-c="s2">Скопировать</button>
+    </div>
+    <div class="card">
+      <h3>«Где мой код?»</h3>
+      <pre class="txt" id="s3">Здравствуйте! Код выдаётся сразу после оплаты. Его можно найти на странице заказа на Plati (раздел «Покупки») и в письме на почте, указанной при оплате. Проверьте, пожалуйста, папку «Спам». Если код не нашёлся, напишите номер заказа, и мы продублируем его здесь.</pre>
+      <button class="copy" data-c="s3">Скопировать</button>
+    </div>
+    <div class="card">
+      <h3>Благодарность и просьба об отзыве</h3>
+      <pre class="txt" id="s4">Спасибо за покупку! Рады, что всё получилось. Если не сложно, оставьте отзыв о заказе: это очень помогает нашему магазину. Будем рады видеть вас снова!</pre>
+      <button class="copy" data-c="s4">Скопировать</button>
+    </div>
+  </section>
+
+  <!-- TODO -->
+  <section class="panel" id="todo" hidden>
+    <div class="card">
+      <h2>Шаги до первой продажи</h2>
+      <ol class="todo">
+        <li><span class="who">ВЫ</span><br>Пройдите верификацию в кабинете Digiseller и заполните реквизиты для вывода денег.</li>
+        <li><span class="who">ВЫ</span><br>Проверьте, где ваша иностранная карта проходит при покупке кодов. Подходят официальный сайт Apple страны, где выпущена карта, и крупные официальные продавцы подарочных карт.</li>
+        <li><span class="who">ВЫ</span><br>Купите 3–5 кодов по $5–10 и проверьте один на своём аккаунте нужного региона. Запишите, сколько ₽ реально списалось с карты.</li>
+        <li><span class="who">ВЫ + КАЛЬКУЛЯТОР</span><br>Впишите реальный курс и комиссии на вкладке «Калькулятор». Сравните цены с конкурентами на Plati.</li>
+        <li><span class="who">ВЫ</span><br>В кабинете создайте товар типа «Уникальный товар» (коды). Добавьте варианты «Регион аккаунта» и «Номинал карты», как на витрине.</li>
+        <li><span class="who">ВЫ + ГОТОВЫЕ ТЕКСТЫ</span><br>Вставьте название и описания с вкладки «Карточка товара». Цены возьмите из калькулятора.</li>
+        <li><span class="who">ВЫ</span><br>Загрузите купленные коды в каждый вариант. Каждый код продаётся один раз.</li>
+        <li><span class="who">ВЫ + ОТВЕТЫ</span><br>Отвечайте в чате по заготовкам с вкладки «Ответы в чат». Следите, чтобы коды не заканчивались.</li>
+      </ol>
+    </div>
+    <div class="card warn">
+      <h3>Риски, о которых нужно знать</h3>
+      <p class="note">В условиях подарочных карт Apple сказано, что их нельзя перепродавать. Apple может заблокировать коды, купленные для перепродажи. Начинайте с небольших партий. Самозанятым нельзя перепродавать чужие товары, поэтому обычно оформляют ИП на УСН. Перед стартом проконсультируйтесь с бухгалтером.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  const ids=["rateUSD","rateTRY","fx","fee","tax","margin","disc","round"];
+  const items=[
+    ["США","USD",5],["США","USD",10],["США","USD",15],["США","USD",20],["США","USD",25],["США","USD",50],["США","USD",100],
+    ["Турция","TRY",100],["Турция","TRY",250],["Турция","TRY",500],["Турция","TRY",1000]
+  ];
+  const sym={USD:"$",TRY:"₺"};
+  const fmt=n=>Math.round(n).toLocaleString("ru-RU")+" ₽";
+  try{const s=JSON.parse(localStorage.getItem("plati-calc")||"{}");ids.forEach(i=>{if(s[i]!=null)document.getElementById(i).value=s[i]});}catch(e){}
+  function v(id){return parseFloat(document.getElementById(id).value)||0}
+  function calc(){
+    const fx=v("fx")/100,fee=v("fee")/100,tax=v("tax")/100,m=v("margin")/100,disc=v("disc")/100,r=v("round")||1;
+    const keep=1-fee-tax; let html="",tot=0,n=0;
+    items.forEach(([reg,cur,nom])=>{
+      const rate=cur==="USD"?v("rateUSD"):v("rateTRY");
+      const cost=nom*(1-disc)*rate*(1+fx);
+      const price=keep>0?Math.ceil(cost*(1+m)/keep/r)*r:0;
+      const net=price*keep, profit=net-cost;
+      tot+=profit/cost*100;n++;
+      html+=`<tr><td>${reg} · ${sym[cur]}${nom}</td><td>${fmt(cost)}</td><td class="price">${fmt(price)}</td><td>${fmt(net)}</td><td class="${profit>=0?"pos":"neg"}">${fmt(profit)}</td></tr>`;
+    });
+    document.getElementById("rows").innerHTML=html;
+    document.getElementById("summary").textContent="Средняя прибыль "+(tot/n).toFixed(1)+"%";
+    try{const s={};ids.forEach(i=>s[i]=document.getElementById(i).value);localStorage.setItem("plati-calc",JSON.stringify(s));}catch(e){}
+  }
+  ids.forEach(i=>document.getElementById(i).addEventListener("input",calc));
+  calc();
+
+  document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b));
+    document.querySelectorAll(".panel").forEach(p=>p.hidden=p.id!==b.dataset.p);
+  }));
+
+  document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{
+    const el=document.getElementById(b.dataset.c);
+    const done=()=>{b.textContent="Скопировано";setTimeout(()=>b.textContent="Скопировать",1500)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Выделено, скопируйте вручную"};
+    try{navigator.clipboard.writeText(el.textContent).then(done,sel)}catch(e){sel()}
+  }));
+})();
+</script>
